@@ -35,12 +35,19 @@ pipeline{
             steps{
                 script{
                     withAWS(credentials: 'aws-cred', region: "${region}"){
-                    sh """
+/*                     sh """
                        aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin 
                        ${acc_id}.dkr.ecr.us-east-1.amazonaws.com
                        docker build -t ${acc_id}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:${appVersion} .
                        docker push ${acc_id}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:latest
-                    """
+                    """ */
+                    sh '''
+                          echo "AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID"
+                          echo "AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY"
+                          echo "AWS_DEFAULT_REGION=$AWS_DEFAULT_REGION"
+
+                          aws sts get-caller-identity
+                        '''
                 }
             }
                 
