@@ -5,7 +5,7 @@ pipeline{
         }
     }
     environment{
-        appversion=""
+        appVersion=""
     }
     stages{
         stage('Read version'){
@@ -31,7 +31,7 @@ pipeline{
         }
         stage('Build docker'){
             steps{
-                docker build -t catalogue:"${appversion}" .
+                docker build -t catalogue:${appVersion} .
             }
         }
     }
