@@ -6,6 +6,8 @@ pipeline{
     }
     environment{
         appVersion=""
+        acc_id="003252302882"
+        region="us-east-1"
     }
     stages{
         stage('Read version'){
@@ -32,8 +34,12 @@ pipeline{
         stage('Build docker'){
             steps{
                 script{
+                    withAWS(credentials: 'aws-cred' region: "${region}")
                     sh """
-                    docker build -t catalogue:${appVersion} .
+                       aws ecr get-login-password --region ${region} | docker login --username AWS --password-stdin 
+                       ${acc_id}.dkr.ecr.us-east-1.amazonaws.com
+                       docker build -t ${acc_id}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:${appVersion} .
+                       docker push ${acc_id}.dkr.ecr.${region}.amazonaws.com/roboshop/catalogue:latest
                     """
                 }
                 
