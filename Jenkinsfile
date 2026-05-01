@@ -20,7 +20,7 @@ pipeline{
                 }
             }
         }
-        stage(install dependencies){
+        stage('install dependencies'){
             steps{
               script{
                 sh """
@@ -29,7 +29,7 @@ pipeline{
                     }                         
                  }
         }
-        stage(Build docker){
+        stage('Build docker'){
             steps{
                 docker build -t catalogue:${appversion} .
             }
