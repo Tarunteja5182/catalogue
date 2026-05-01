@@ -31,7 +31,12 @@ pipeline{
         }
         stage('Build docker'){
             steps{
-                docker build -t catalogue:${appVersion} .
+                script{
+                    sh """
+                    docker build -t catalogue:${appVersion} .
+                    """
+                }
+                
             }
         }
     }
